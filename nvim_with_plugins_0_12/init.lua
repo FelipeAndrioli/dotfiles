@@ -1,13 +1,3 @@
-vim.api.nvim_create_autocmd('LspAttach', {
-	callback = function(args)
-		local client = vim.lsp.get_client_by_id(args.data.client_id)
-		if client and client:supports_method('textDocument/completion') then
-			-- enable native lsp completion with autotrigger
-			vim.lsp.completion.enable(true, client.id, args.buf, { autotrigger = true })
-		end
-	end,
-})
-
 vim.pack.add({
 	'https://github.com/nvim-lua/plenary.nvim',
 	'https://github.com/nvim-telescope/telescope-fzf-native.nvim',
@@ -74,7 +64,21 @@ vim.opt.isfname:append("@-@")
 vim.opt.showmatch = true							-- highlight matchint brackets
 vim.opt.matchtime = 2								-- how long to show matching bracket
 vim.opt.cmdheight = 1								-- command line height
-vim.opt.completeopt = "menuone,noinsert,noselect"	-- completion options
+
+--[[
+    - menu:     Uses a popup menu to show the possible completions.
+    - menuone:  Forces the popup menu to show up even if there is only a single match.
+    - noselect: Do not select a match from the menu automatically. It forces you to manually pick an option before inserting, stopping the editor from aggressively modifying text while you type.
+    - noinsert: Do not insert any text into the buffer until you actively select a match from the menu.
+    - longest:  Only inserts the longest common text of all matches.
+    - preview:  Shows extra information about the currently selected completion item in a separate preview window.
+    - popup:    Used in newer nvim versions to display the completion preview information inside a floating popup window next to the menu, instead of opening a split scratch buffer.
+    - fuzzy:    Enables fuzzy matching behavios for native completion engines.
+]]
+
+vim.opt.autocomplete = true                           -- enable native insert-mode auto-completion
+vim.opt.pumheight = 10                                -- limit max items shown
+vim.opt.completeopt = "menu,menuone,noinsert,noselect,popup,fuzzy"  -- completion options
 vim.opt.showmode = false							-- don't show mode in command line
 vim.opt.pumheight = 10								-- popup menu height
 vim.opt.pumblend = 10								-- popup menu transparency
@@ -105,7 +109,6 @@ vim.opt.encoding = "UTF-8"							-- Set encoding
 vim.g.netrw_hide = 0								-- Show all files
 vim.g.netrw_list_hide = ""							-- Don't hide any files
 vim.g.netrw_banner = 1								-- 0 -> Disable banner for cleaner view
-
 
 -- Command-line completion
 vim.opt.wildmenu = true
