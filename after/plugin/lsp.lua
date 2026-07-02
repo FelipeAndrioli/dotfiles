@@ -22,13 +22,40 @@ vim.lsp.config['clangd'] = {
 vim.lsp.enable('clangd')
 
 -- JDTLS (Java)
+local home = vim.fn.expand('~')
+local root_markers = { 'pom.xml', 'build.gradle', 'mvnw', 'gradlew', '.git' }
+
+--local raw_jdtls_bin = home .. '/AppData/Local/nvim-data/mason/packages/jdtls/bin/jdtls.cmd'
+local raw_jdtls_bin = home .. '/AppData/Local/nvim-data/mason/packages/jdtls/bin/jdtls'
+local current_file = vim.api.nvim_buf_get_name(0)
+local root_dir = vim.fs.root(0, root_markers)
+
+if (not root_dir or root_dir == "") and current_file ~= "" then
+    root_dir = vim.fs.dirname(current_file)
+end
+if not root_dir or root_dir == "" then
+    root_dir = vim.fn.getcwd()
+end
+
+local project_name = vim.fs.basename(root_dir)
+if project_name == "" or project_name == nil then
+    project_name = "standalone-" .. vim.fn.sha256(root_dir):sub(1, 8)
+end
+local raw_workspace_dir = home .. '/.cache/jdtls/workspace/' .. project_name
+
+local jdtls_bin = vim.fs.normalize(raw_jdtls_bin):gsub("/", "\\")
+local workspace_dir = vim.fs.normalize(raw_workspace_dir):gsub("/", "\\")
+
 vim.lsp.config('jdtls', {
     capabilities = capabilities, 
+    cmd = { jdtls_bin, "-data", workspace_dir },
+    filetypes = { "java" },
+    root_markers = root_markers,
+    single_file_support = true,
     settings = {
         java = {
             signatureHelp = { enabled = true },
             completion = {
-                -- stops Java from adding massive import paths while typing
                 guessMethodArguments = false, 
                 favoriteStaticMembers = {
                     "org.hamcrest.MatcherAssert.assertThat",
@@ -67,9 +94,7 @@ vim.lsp.config('jedi_language_server', {
 vim.lsp.enable('jedi_language_server')
 
 vim.keymap.set("i", "<C-o>", "<C-x><C-o>", { silent = true, noremap = true })
-
 vim.keymap.set("n", "<leader>d", vim.diagnostic.open_float, { desc = "Open diagnostic floating window" })
-
 vim.keymap.set("n", "<leader>D", function()
   vim.diagnostic.open_float()
   vim.cmd("wincmd w")
@@ -96,4 +121,3 @@ vim.api.nvim_create_autocmd("LspAttach", {
         end, { buffer = args.buf, desc = "LSP Signature Help" })
     end,
 })
-
