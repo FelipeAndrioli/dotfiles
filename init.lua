@@ -5,13 +5,23 @@ vim.pack.add({
 	'https://github.com/nvim-treesitter/nvim-treesitter',
 
 	'https://github.com/mason-org/mason.nvim',
-	
+
+    'https://github.com/rafamadriz/friendly-snippets',
+    'https://github.com/nvim-mini/mini.icons',                          -- for work properly, mini.icons need a modern font such as JetBrainsMono, FiraCode, or Hack Nerd Font
+
 	-- colorschemes
 	'https://github.com/rebelot/kanagawa.nvim',
 	'https://github.com/ellisonleao/gruvbox.nvim',
 	'https://github.com/folke/tokyonight.nvim',
 	'https://github.com/catppuccin/nvim',
 	-- colorschemes
+})
+
+vim.pack.add({
+    {
+        src = "https://github.com/saghen/blink.cmp",
+        version = vim.version.range("^1"),
+    },
 })
 
 require("mason").setup({
@@ -76,7 +86,7 @@ vim.opt.cmdheight = 1								-- command line height
     - fuzzy:    Enables fuzzy matching behavios for native completion engines.
 ]]
 
-vim.opt.autocomplete = true                           -- enable native insert-mode auto-completion
+vim.opt.autocomplete = false                        -- enable native insert-mode auto-completion
 vim.opt.pumheight = 10                                -- limit max items shown
 vim.opt.completeopt = "menu,menuone,noinsert,noselect,popup,fuzzy"  -- completion options
 vim.opt.showmode = false							-- don't show mode in command line
@@ -99,7 +109,7 @@ vim.opt.backspace = "indent,eol,start"				-- Better backspace behavior
 vim.opt.autochdir = false							-- Don't auto change directory
 vim.opt.iskeyword:append("-")						-- Treat dash as part of word
 vim.opt.path:append("**")							-- Include subdirectories in search
-vim.opt.selection = "exclusive"						-- Selection behavior
+vim.opt.selection = "inclusive"						-- Selection behavior, 'exclusive' leaves the last character of a function signature after accepting a suggestion and filling it, 'inclusive' doesn't.
 vim.opt.mouse = "a"									-- Enable mouse support
 vim.opt.clipboard:append("unnamedplus")				-- Use system clipboard
 vim.opt.modifiable = true							-- Allow buffer modifications
