@@ -1,5 +1,5 @@
 local capabilities = require('blink.cmp').get_lsp_capabilities()
-capabilities.textDocument.completion.completionItem.snippetSupport = false
+capabilities.textDocument.completion.completionItem.snippetSupport = true 
 
 -- CLANGD (C/C++)
 vim.lsp.config['clangd'] = {

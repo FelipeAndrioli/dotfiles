@@ -36,7 +36,7 @@ require("blink.cmp").setup({
         },
         list = {
             selection = {
-                preselect = true,
+                preselect = false,
                 auto_insert = false,
             },
         },
