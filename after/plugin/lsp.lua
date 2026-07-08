@@ -1,9 +1,9 @@
-local capabilities = require('blink.cmp').get_lsp_capabilities()
-capabilities.textDocument.completion.completionItem.snippetSupport = true 
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = require('blink.cmp').get_lsp_capabilities(capabilities)
 
 -- CLANGD (C/C++)
-vim.lsp.config['clangd'] = {
-    capabilities = capabilities, 
+vim.lsp.config('clangd', {
+    capabilities = capabilities,
     cmd = { 
         "clangd",
         "--completion-style=detailed",
@@ -18,12 +18,13 @@ vim.lsp.config['clangd'] = {
             completion = { editsNearCursor = true }
         }
     }
-}
+})
+
 vim.lsp.enable('clangd')
 
 -- JDTLS (Java)
 vim.lsp.config('jdtls', {
-    capabilities = capabilities, 
+    capabilities = capabilities,
     settings = {
         java = {
             signatureHelp = { enabled = true },
@@ -43,7 +44,7 @@ vim.lsp.enable('jdtls')
 
 -- JEDI LANGUAGE SERVER (Python)
 vim.lsp.config('jedi_language_server', {
-    capabilities = capabilities, 
+    capabilities = capabilities,
     cmd = { 'jedi-language-server' },
     filetypes = { 'python' },
     root_markers = {

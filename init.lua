@@ -21,8 +21,11 @@ vim.pack.add({
     {
         src = "https://github.com/saghen/blink.cmp",
         version = vim.version.range("^1"),
+        build = "cargo build --release",
     },
 })
+
+vim.cmd('packadd blink.cmp')
 
 require("mason").setup({
     ui = {
@@ -289,3 +292,4 @@ vim.api.nvim_create_autocmd('FileType', {
     pattern = { 'c', 'cpp', 'python', 'lua', 'go' },
     callback = function() vim.treesitter.start() end,
 })
+

@@ -24,6 +24,9 @@ require("blink.cmp").setup({
 
     completion = {
         menu = {
+            auto_show = function(ctx)
+                return ctx.model ~= 'cmdline' or vim.tbl_contains({ '.', ':', '->' }, ctx.trigger.initial_character)
+            end,
             draw = {
                 components = {
                     kind_icon = {
@@ -37,7 +40,7 @@ require("blink.cmp").setup({
         list = {
             selection = {
                 preselect = false,
-                auto_insert = false,
+                auto_insert = true,
             },
         },
         documentation = {
