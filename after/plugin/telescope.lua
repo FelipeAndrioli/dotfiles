@@ -4,6 +4,11 @@ require('telescope').setup({
             "%/target/%",
         },
     },
+    pickers = {
+        colorscheme = {
+            enable_preview = true
+        }
+    },
 })
 
 local builtin = require('telescope.builtin')
